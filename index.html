@@ -50,17 +50,40 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
 .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 #loading p{font-size:12px;color:var(--muted);letter-spacing:2px;}
 
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn 0.2s ease;}
+.modal{background:var(--surface);border-radius:16px 16px 0 0;padding:24px 20px 40px;width:100%;max-width:480px;animation:slideDown 0.25s ease;}
+.modal-title{font-size:13px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:20px;text-align:center;}
+.modal-btn{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:14px;border-radius:8px;font-size:13px;font-family:var(--mono);cursor:pointer;margin-bottom:10px;text-align:left;display:flex;align-items:center;gap:12px;transition:border-color 0.15s;}
+.modal-btn:hover,.modal-btn:active{border-color:var(--accent);}
+.modal-btn .micon{font-size:20px;width:30px;text-align:center;}
+.modal-btn .mtext{flex:1;}
+.modal-btn .mtitle{font-size:13px;color:var(--text);}
+.modal-btn .msub{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:1px;}
+.modal-cancel{width:100%;background:none;border:1px solid var(--muted);color:var(--muted);padding:12px;border-radius:8px;font-size:12px;font-family:var(--mono);cursor:pointer;margin-top:4px;}
+
+/* UPDATE BANNER */
+#update-banner{display:none;background:linear-gradient(135deg,#1a2a1a,#1a1a2e);border-bottom:2px solid var(--green);padding:12px 16px;position:sticky;top:0;z-index:20;}
+#update-banner.show{display:flex;align-items:center;gap:10px;}
+#update-banner p{flex:1;font-size:12px;color:var(--green);}
+#update-banner p span{color:var(--text);font-weight:bold;}
+.btn-update{background:var(--green);color:#0f0e17;border:none;padding:8px 14px;border-radius:4px;font-size:11px;font-family:var(--mono);font-weight:bold;letter-spacing:1px;cursor:pointer;white-space:nowrap;}
+.btn-dismiss-update{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0 4px;}
+
 /* APP */
 #app{min-height:100vh;display:flex;flex-direction:column;}
 #header{background:var(--bg);border-bottom:2px solid var(--accent);padding:16px 16px 12px;position:sticky;top:0;z-index:10;}
 .header-top{display:flex;justify-content:space-between;align-items:flex-start;}
 #header .sub{font-size:10px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:3px;}
 #header h1{font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:1px;}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-top:6px;}
 .user-chip{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--accent);border-radius:20px;padding:4px 10px;cursor:pointer;}
-.avatar{width:24px;height:24px;background:var(--accent);color:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;}
+.avatar{width:24px;height:24px;background:var(--accent);color:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;flex-shrink:0;}
 .uname{font-size:10px;color:var(--muted);letter-spacing:1px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite;flex-shrink:0;}
 .sync-dot.off{background:var(--red);animation:none;}
+.backup-chip{display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:3px 10px;cursor:pointer;font-size:10px;color:var(--muted);}
+.backup-chip:active{border-color:var(--accent);}
 .month-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;}
 .month-row select{background:var(--surface);color:var(--text);border:1px solid var(--accent);padding:6px 10px;border-radius:4px;font-size:13px;font-family:var(--mono);}
 .badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:12px;font-size:11px;letter-spacing:1px;white-space:nowrap;}
@@ -158,6 +181,11 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
 
 .bdashed{width:100%;background:none;border:1px dashed var(--accent);color:var(--accent);padding:10px;border-radius:4px;font-size:11px;letter-spacing:2px;cursor:pointer;text-transform:uppercase;margin-top:12px;}
 .liverow{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:12px;}
+
+/* BACKUP SCREEN */
+.backup-info{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.7;}
+.backup-info strong{color:var(--text);}
+.backup-info .ts{color:var(--accent);font-size:10px;}
 </style>
 </head>
 <body>
@@ -178,12 +206,19 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
   </div>
   <button class="btn-setup" id="btn-go">Open Ledger →</button>
   <div class="setup-divider"></div>
-  <div class="setup-note">💡 Everyone using the same ledger code sees the same entries in real time. Choose any code you like — just share it with the other phones.</div>
+  <div class="setup-note">💡 Everyone using the same ledger code sees the same entries in real time.</div>
 </div>
 
 <div id="loading" style="display:none">
   <div class="spinner"></div>
-  <p>CONNECTING...</p>
+  <p id="loading-msg">CONNECTING...</p>
+</div>
+
+<!-- UPDATE BANNER -->
+<div id="update-banner">
+  <p>🆕 <span>New version available!</span> Tap to update now.</p>
+  <button class="btn-update" id="btn-do-update">Update</button>
+  <button class="btn-dismiss-update" id="btn-dismiss-update">✕</button>
 </div>
 
 <div id="app" style="display:none">
@@ -193,11 +228,14 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
         <div class="sub">Shared Ledger</div>
         <h1>Purchase Ledger</h1>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-top:6px;">
+      <div class="header-right">
         <div class="user-chip" id="user-chip">
           <div class="avatar" id="av"></div>
           <div class="uname" id="un"></div>
           <div class="sync-dot" id="sdot"></div>
+        </div>
+        <div class="backup-chip" id="backup-chip">
+          💾 <span>Backup / Restore</span>
         </div>
       </div>
     </div>
@@ -224,10 +262,16 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
   <div id="content"></div>
 </div>
 
+<div id="modal-container"></div>
 <div id="toast"></div>
 
 <script>
-// ── YOUR FIREBASE CONFIG ──
+// ── VERSION (bump this number each update) ──
+const APP_VERSION = '1.2.0';
+const VERSION_URL = 'https://lylemichael820.github.io/my-ledger/version.json';
+const UPDATE_URL  = 'https://lylemichael820.github.io/my-ledger/index.html';
+
+// ── FIREBASE CONFIG ──
 const firebaseConfig = {
   apiKey: "AIzaSyBiB7ICqWtb6dnsFvtrWA93Is7qe1-NTcA",
   authDomain: "ledger-b95c2.firebaseapp.com",
@@ -240,16 +284,17 @@ const firebaseConfig = {
 
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const LOCAL_KEY='ledger-user-v2';
+const BACKUP_KEY='ledger-backup-v1';
 
-let db=null, dbRef=null;
+let db=null,dbRef=null,backupRef=null;
 let allEntries={};
-let selYear, selMonth;
+let selYear,selMonth;
 let activeTab='ledger';
 let editId=null;
 let todayInlineId=null;
-let userInitials='', ledgerCode='';
+let userInitials='',ledgerCode='';
 const now=new Date();
-selYear=now.getFullYear(); selMonth=now.getMonth();
+selYear=now.getFullYear();selMonth=now.getMonth();
 
 // ── Helpers ──
 function fc(v){return '$'+Number(v||0).toFixed(2);}
@@ -259,11 +304,12 @@ function daysInMonth(y,m){return new Date(y,m+1,0).getDate();}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function loadUser(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY))||null;}catch{return null;}}
 function saveUser(u){localStorage.setItem(LOCAL_KEY,JSON.stringify(u));}
+function fmtDate(ts){return ts?new Date(ts).toLocaleString():'Never';}
 
 function showToast(msg,type='success'){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className=`show ${type}`;
-  setTimeout(()=>t.className='',2600);
+  setTimeout(()=>t.className='',2800);
 }
 
 function getEntries(y,m){
@@ -279,6 +325,157 @@ function autoCredit(ti,pi,ci){
 
 function dbSave(entry){if(dbRef)dbRef.child(entry.id).set(entry);}
 function dbDel(id){if(dbRef)dbRef.child(id).remove();}
+
+// ── UPDATE CHECK ──
+async function checkForUpdate(){
+  try{
+    const r=await fetch(VERSION_URL+'?t='+Date.now());
+    if(!r.ok)return;
+    const j=await r.json();
+    if(j.version && j.version!==APP_VERSION){
+      const banner=document.getElementById('update-banner');
+      banner.classList.add('show');
+      document.getElementById('btn-do-update').onclick=()=>{
+        window.location.href=UPDATE_URL+'?t='+Date.now();
+      };
+      document.getElementById('btn-dismiss-update').onclick=()=>{
+        banner.classList.remove('show');
+      };
+    }
+  }catch(e){}
+}
+
+// ── BACKUP / RESTORE ──
+function getLastBackupInfo(){
+  try{const b=JSON.parse(localStorage.getItem(BACKUP_KEY));return b||null;}catch{return null;}
+}
+
+function doLocalBackup(){
+  const backup={
+    version:APP_VERSION,
+    timestamp:Date.now(),
+    ledgerCode,
+    entries:allEntries
+  };
+  localStorage.setItem(BACKUP_KEY,JSON.stringify(backup));
+  // Also trigger file download
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`ledger-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ Backup saved to Downloads!');
+  closeModal();
+}
+
+async function doCloudBackup(){
+  if(!backupRef){showToast('Not connected','error');return;}
+  const backup={
+    version:APP_VERSION,
+    timestamp:Date.now(),
+    ledgerCode,
+    entries:allEntries
+  };
+  try{
+    await backupRef.set(backup);
+    localStorage.setItem(BACKUP_KEY,JSON.stringify({...backup,cloudSaved:true}));
+    showToast('☁️ Backup saved to cloud!');
+    closeModal();
+  }catch(e){
+    showToast('Cloud backup failed','error');
+  }
+}
+
+function doLocalRestore(){
+  const input=document.createElement('input');
+  input.type='file';input.accept='.json';
+  input.onchange=async(e)=>{
+    const file=e.target.files[0];if(!file)return;
+    try{
+      const text=await file.text();
+      const backup=JSON.parse(text);
+      if(!backup.entries){showToast('Invalid backup file','error');return;}
+      if(confirm(`Restore ${Object.keys(backup.entries).length} entries from ${fmtDate(backup.timestamp)}?\n\nThis will MERGE with current data.`)){
+        // Merge entries into Firebase
+        const entries=backup.entries;
+        let count=0;
+        for(const entry of Object.values(entries)){
+          if(entry&&entry.id){dbSave(entry);count++;}
+        }
+        showToast(`✅ Restored ${count} entries!`);
+        closeModal();
+      }
+    }catch(e){showToast('Could not read file','error');}
+  };
+  input.click();
+  closeModal();
+}
+
+async function doCloudRestore(){
+  if(!backupRef){showToast('Not connected','error');return;}
+  showToast('Loading cloud backup...','info');
+  try{
+    const snap=await backupRef.once('value');
+    const backup=snap.val();
+    if(!backup||!backup.entries){showToast('No cloud backup found','error');return;}
+    if(confirm(`Restore ${Object.keys(backup.entries).length} entries from cloud backup?\nSaved: ${fmtDate(backup.timestamp)}\n\nThis will MERGE with current data.`)){
+      let count=0;
+      for(const entry of Object.values(backup.entries)){
+        if(entry&&entry.id){dbSave(entry);count++;}
+      }
+      showToast(`✅ Restored ${count} entries from cloud!`);
+      closeModal();
+    }
+  }catch(e){showToast('Could not load cloud backup','error');}
+}
+
+function showBackupModal(){
+  const last=getLastBackupInfo();
+  const lastInfo=last?`Last backup: <span class="ts">${fmtDate(last.timestamp)}${last.cloudSaved?' ☁️':' 📱'}</span>`:'No backup yet';
+  const entryCount=Object.keys(allEntries).length;
+  showModal(`
+    <div class="modal-title">💾 Backup & Restore</div>
+    <div class="backup-info">
+      <strong>${entryCount} entries</strong> in current ledger<br>${lastInfo}
+    </div>
+    <div style="font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;">Backup</div>
+    <button class="modal-btn" id="mb-local">
+      <div class="micon">📱</div>
+      <div class="mtext"><div class="mtitle">Save to Phone</div><div class="msub">Downloads a .json file to your device</div></div>
+    </button>
+    <button class="modal-btn" id="mb-cloud">
+      <div class="micon">☁️</div>
+      <div class="mtext"><div class="mtitle">Save to Cloud</div><div class="msub">Stores backup in Firebase (shared)</div></div>
+    </button>
+    <div style="font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin:14px 0 10px;">Restore</div>
+    <button class="modal-btn" id="mb-rlocal">
+      <div class="micon">📂</div>
+      <div class="mtext"><div class="mtitle">Restore from File</div><div class="msub">Pick a .json backup file from your phone</div></div>
+    </button>
+    <button class="modal-btn" id="mb-rcloud">
+      <div class="micon">🌐</div>
+      <div class="mtext"><div class="mtitle">Restore from Cloud</div><div class="msub">Load the last cloud backup</div></div>
+    </button>
+    <button class="modal-cancel" id="mb-cancel">Cancel</button>
+  `);
+  document.getElementById('mb-local').onclick=doLocalBackup;
+  document.getElementById('mb-cloud').onclick=doCloudBackup;
+  document.getElementById('mb-rlocal').onclick=doLocalRestore;
+  document.getElementById('mb-rcloud').onclick=doCloudRestore;
+  document.getElementById('mb-cancel').onclick=closeModal;
+}
+
+function showModal(html){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`<div class="modal-bg" id="modal-bg"><div class="modal">${html}</div></div>`;
+  document.getElementById('modal-bg').onclick=(e)=>{if(e.target.id==='modal-bg')closeModal();};
+}
+
+function closeModal(){
+  document.getElementById('modal-container').innerHTML='';
+}
 
 // ── Boot ──
 window.addEventListener('load',()=>{
@@ -298,25 +495,23 @@ function showSetup(){
     const c=ic.value.trim().toUpperCase();
     if(i.length<1){showToast('Enter your initials','error');return;}
     if(c.length<2){showToast('Enter a ledger code (min 2 chars)','error');return;}
-    const u={initials:i,code:c};
-    saveUser(u);startApp(u);
+    const u={initials:i,code:c};saveUser(u);startApp(u);
   };
 }
 
 async function startApp(user){
-  userInitials=user.initials; ledgerCode=user.code;
+  userInitials=user.initials;ledgerCode=user.code;
   document.getElementById('setup-screen').style.display='none';
   document.getElementById('loading').style.display='flex';
   try{
     firebase.initializeApp(firebaseConfig);
     db=firebase.database();
     dbRef=db.ref(`ledgers/${ledgerCode}/entries`);
-    // Online indicator
+    backupRef=db.ref(`backups/${ledgerCode}`);
     db.ref('.info/connected').on('value',snap=>{
       const d=document.getElementById('sdot');
       if(d)d.className='sync-dot'+(snap.val()?'':' off');
     });
-    // Real-time listener
     dbRef.on('value',snap=>{
       allEntries={};
       const val=snap.val()||{};
@@ -327,10 +522,12 @@ async function startApp(user){
     document.getElementById('app').style.display='flex';
     setupUI();
     render();
+    // Check for updates after 3 seconds
+    setTimeout(checkForUpdate, 3000);
   }catch(err){
     console.error(err);
     document.getElementById('loading').style.display='none';
-    showToast('Connection error — check internet','error');
+    showToast('Connection error','error');
     document.getElementById('setup-screen').style.display='flex';
   }
 }
@@ -350,6 +547,7 @@ function setupUI(){
     const n=prompt('Change initials (1–3 letters):','');
     if(n&&n.trim()){const u={initials:n.trim().toUpperCase().slice(0,3),code:ledgerCode};saveUser(u);userInitials=u.initials;updateChip();}
   };
+  document.getElementById('backup-chip').onclick=showBackupModal;
   updateChip();
 }
 
@@ -429,14 +627,12 @@ function makeCard(entry,isToday=false){
   return div;
 }
 
-// ── Ledger ──
 function renderLedger(el){
   const entries=getEntries(selYear,selMonth);
   const lr=document.createElement('div');lr.className='liverow';
-  lr.innerHTML=`<div class="sync-dot" id="sdot2"></div><span>LIVE · CODE: <strong style="color:var(--accent)">${esc(ledgerCode)}</strong></span>`;
+  lr.innerHTML=`<div class="sync-dot" id="sdot2"></div><span>LIVE · CODE: <strong style="color:var(--accent)">${esc(ledgerCode)}</strong> · v${APP_VERSION}</span>`;
   el.appendChild(lr);
   db&&db.ref('.info/connected').once('value',s=>{const d=document.getElementById('sdot2');if(d)d.className='sync-dot'+(s.val()?'':' off');});
-
   if(!entries.length){
     const e=document.createElement('div');
     e.innerHTML=`<div class="empty"><div class="eicon">📋</div><div class="etext">No entries for ${MONTHS[selMonth]} ${selYear}</div><button class="bempty" id="ga">Add First Entry</button></div>`;
@@ -456,18 +652,15 @@ function renderLedger(el){
   });
 }
 
-// ── Today ──
 function renderToday(el){
   const cur=selYear===now.getFullYear()&&selMonth===now.getMonth();
   const tot=daysInMonth(selYear,selMonth);
   const gone=cur?now.getDate():null;
   const left=cur?tot-gone:null;
-
   const title=document.createElement('div');
   title.style.cssText='font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:14px;';
   title.textContent='⭐ '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   el.appendChild(title);
-
   if(cur){
     const dc=document.createElement('div');dc.className='dcards';
     dc.innerHTML=`<div class="dcard"><div class="dclabel">Days Passed</div><div class="dcval" style="color:var(--text)">${gone}</div><div class="dcsub">of ${tot}</div></div><div class="dcard${left<=3?' warn':''}"><div class="dclabel">Days Left</div><div class="dcval" style="color:${left<=3?'var(--red)':'var(--green)'}">${left}</div><div class="dcsub">in ${MONTHS[selMonth]}</div></div>`;
@@ -477,7 +670,6 @@ function renderToday(el){
     pb.innerHTML=`<div class="pbar"><div class="pfill" style="width:${pct}%"></div></div><div class="plabel">${pct}% OF ${MONTHS[selMonth].toUpperCase()} COMPLETE</div>`;
     el.appendChild(pb);
   }
-
   const te=getEntries(now.getFullYear(),now.getMonth()).filter(e=>toLocal(e.date)===todayStr());
   if(!te.length){
     const e=document.createElement('div');
@@ -485,12 +677,10 @@ function renderToday(el){
     e.querySelector('#at').onclick=()=>{activeTab='add';render();};
     el.appendChild(e);return;
   }
-
   const cd=document.createElement('div');
   cd.style.cssText='font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';
   cd.textContent=`${te.length} TRANSACTION${te.length>1?'S':''} — ${fc(te.reduce((s,e)=>s+e.total,0))} TODAY`;
   el.appendChild(cd);
-
   te.forEach(entry=>{
     if(todayInlineId===entry.id){el.appendChild(buildInline(entry));}
     else{
@@ -500,7 +690,6 @@ function renderToday(el){
       el.appendChild(card);
     }
   });
-
   const am=document.createElement('button');am.className='bdashed';am.textContent='+ Add Another Entry Today';
   am.onclick=()=>{activeTab='add';render();};el.appendChild(am);
 }
@@ -525,7 +714,6 @@ function buildInline(entry){
   return div;
 }
 
-// ── Add / Edit ──
 function renderAdd(el){
   const isEdit=!!editId;
   const ex=isEdit?allEntries[editId]:null;
@@ -545,13 +733,9 @@ function renderAdd(el){
       ${isEdit?'<button class="bcancel" id="fcan">Cancel</button>':''}
     </div>
     <div class="ftip">💡 Pick any date — even months ago. Your initials <strong style="color:var(--accent)">${esc(userInitials)}</strong> will appear on this entry.</div>`;
-
   const g=id=>div.querySelector(id);
-  [['#ft','#fp']].forEach(()=>{
-    g('#ft').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
-    g('#fp').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
-  });
-
+  g('#ft').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
+  g('#fp').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
   g('#fsub').onclick=()=>{
     const seller=g('#fs').value.trim(),item=g('#fi').value.trim(),total=g('#ft').value,dateVal=g('#fd').value;
     if(!seller||!item||!total){showToast('Seller, item & total required','error');return;}
@@ -567,8 +751,7 @@ function renderAdd(el){
     };
     if(isEdit)entry.editedBy=userInitials;
     dbSave(entry);
-    showToast(isEdit?'Entry updated!':'Entry saved! Syncing…');
-    // Switch view to entry's month
+    showToast(isEdit?'Entry updated!':'Entry saved!');
     selYear=ey;selMonth=em;
     const sm=document.getElementById('sel-month');const sy=document.getElementById('sel-year');
     if(sm)sm.value=em;if(sy)sy.value=ey;
@@ -578,7 +761,6 @@ function renderAdd(el){
   el.appendChild(div);
 }
 
-// ── Sellers ──
 function renderSellers(el){
   const entries=getEntries(selYear,selMonth);
   if(!entries.length){
