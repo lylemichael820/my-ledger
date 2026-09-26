@@ -16,7 +16,7 @@
 :root {
   --bg:#0f0e17; --surface:#1a1a2e; --border:#2a2a40;
   --accent:#ff8906; --accent2:#ffb347; --text:#fffffe;
-  --muted:#a8a8b3; --green:#a7f3d0; --red:#fca5a5;
+  --muted:#a8a8b3; --green:#a7f3d0; --red:#fca5a5; --blue:#93c5fd;
   --mono:'Share Tech Mono','Courier New',monospace;
   --sans:'Barlow',sans-serif;
 }
@@ -108,12 +108,15 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
 
 .ecard{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:13px;margin-bottom:8px;animation:slideDown 0.2s ease;}
 .ecard.tcard{border-color:rgba(255,137,6,0.35);}
+.ecard.pcard{border-color:rgba(147,197,253,0.4);background:rgba(147,197,253,0.05);}
 .etop{display:flex;justify-content:space-between;align-items:flex-start;}
 .ename{font-size:13px;font-weight:bold;}
 .emeta{display:flex;align-items:center;gap:5px;margin-top:3px;flex-wrap:wrap;}
 .eseller{font-size:11px;color:var(--accent);letter-spacing:1px;}
+.eseller.payment{color:var(--blue);}
 .ichip{background:rgba(255,137,6,0.15);border:1px solid rgba(255,137,6,0.4);color:var(--accent);font-size:9px;font-weight:bold;padding:1px 6px;border-radius:10px;letter-spacing:1px;}
 .echip{background:rgba(167,243,208,0.1);border:1px solid rgba(167,243,208,0.4);color:var(--green);font-size:9px;font-weight:bold;padding:1px 6px;border-radius:10px;letter-spacing:1px;}
+.pchip{background:rgba(147,197,253,0.15);border:1px solid rgba(147,197,253,0.4);color:var(--blue);font-size:9px;font-weight:bold;padding:1px 6px;border-radius:10px;letter-spacing:1px;}
 .eacts{display:flex;gap:6px;flex-shrink:0;}
 .bedit{background:none;border:1px solid var(--muted);color:var(--muted);padding:4px 10px;border-radius:3px;font-size:10px;cursor:pointer;}
 .bdel{background:none;border:1px solid var(--red);color:var(--red);padding:4px 10px;border-radius:3px;font-size:10px;cursor:pointer;}
@@ -123,16 +126,29 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
 .mlabel{font-size:9px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
 .mval{font-size:13px;font-weight:bold;margin-top:2px;}
 
+/* Payment card single amount */
+.pcell{background:var(--bg);border-radius:4px;padding:10px;text-align:center;margin-top:11px;border:1px solid rgba(147,197,253,0.2);}
+.plabel{font-size:9px;letter-spacing:2px;color:var(--blue);text-transform:uppercase;margin-bottom:4px;}
+.pval{font-size:20px;font-weight:bold;color:var(--blue);}
+
 .fsec{max-width:480px;}
 .ftitle{font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:16px;}
 .field{margin-bottom:13px;}
 .field label{display:block;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
 .field label span{color:var(--accent);font-size:9px;}
-.field input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:4px;font-size:14px;font-family:var(--mono);color-scheme:dark;transition:border-color 0.15s;}
+.field input,.field select{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:4px;font-size:14px;font-family:var(--mono);color-scheme:dark;transition:border-color 0.15s;}
 .field input[type="date"]{border-color:var(--accent);}
-.field input:focus{border-color:var(--accent);}
+.field input:focus,.field select:focus{border-color:var(--accent);}
+
+/* Entry type toggle */
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+.type-btn{padding:12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:var(--mono);cursor:pointer;text-align:center;letter-spacing:1px;transition:all 0.15s;}
+.type-btn.active-purchase{border-color:var(--accent);color:var(--accent);background:rgba(255,137,6,0.1);}
+.type-btn.active-payment{border-color:var(--blue);color:var(--blue);background:rgba(147,197,253,0.1);}
+
 .brow{display:flex;gap:10px;margin-top:18px;}
 .bprimary{flex:1;background:var(--accent);color:var(--bg);border:none;padding:13px;border-radius:4px;font-size:12px;font-weight:bold;letter-spacing:2px;cursor:pointer;text-transform:uppercase;}
+.bprimary.payment-btn{background:var(--blue);color:#0f0e17;}
 .bcancel{background:none;border:1px solid var(--muted);color:var(--muted);padding:13px 16px;border-radius:4px;font-size:12px;cursor:pointer;}
 .ftip{margin-top:11px;padding:10px 12px;background:var(--surface);border-radius:4px;font-size:11px;color:var(--muted);line-height:1.7;}
 
@@ -154,13 +170,14 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
 .dcsub{font-size:9px;color:var(--muted);}
 .pbar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:4px;}
 .pfill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;}
-.plabel{font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:18px;}
+.plabel2{font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:18px;}
 
 .selcard{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:15px;margin-bottom:10px;}
 .seltop{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
 .selname{font-size:15px;font-weight:bold;font-family:var(--sans);}
 .selcount{font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:2px;}
 .owes{background:rgba(252,165,165,0.15);border:1px solid var(--red);color:var(--red);padding:3px 10px;border-radius:12px;font-size:10px;letter-spacing:1px;}
+.paid-off{background:rgba(167,243,208,0.15);border:1px solid var(--green);color:var(--green);padding:3px 10px;border-radius:12px;font-size:10px;letter-spacing:1px;}
 
 .empty{text-align:center;padding:60px 20px;color:var(--muted);}
 .eicon{font-size:36px;margin-bottom:12px;}
@@ -198,7 +215,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
   </div>
   <button class="btn-setup" id="btn-go">Open Ledger →</button>
   <div class="setup-divider"></div>
-  <div class="setup-note">💡 Everyone using the same ledger code sees the same entries in real time. Choose any code and share it with other phones.</div>
+  <div class="setup-note">💡 Everyone using the same ledger code sees the same entries in real time.</div>
 </div>
 
 <div id="loading" style="display:none">
@@ -255,7 +272,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.6) sepia(1
 <div id="toast"></div>
 
 <script>
-const APP_VERSION='1.3.0';
+const APP_VERSION='1.4.0';
 const VERSION_URL='https://lylemichael820.github.io/my-ledger/version.json';
 const UPDATE_URL='https://lylemichael820.github.io/my-ledger/index.html';
 
@@ -279,6 +296,7 @@ let selYear,selMonth;
 let activeTab='ledger';
 let editId=null;
 let todayInlineId=null;
+let entryType='purchase'; // 'purchase' or 'payment'
 let userInitials='',ledgerCode='';
 const now=new Date();
 selYear=now.getFullYear();selMonth=now.getMonth();
@@ -389,7 +407,7 @@ async function doCloudRestore(){
 }
 
 function showBackupModal(){
-  const last=(() =>{try{return JSON.parse(localStorage.getItem(BACKUP_KEY));}catch{return null;}})();
+  const last=(()=>{try{return JSON.parse(localStorage.getItem(BACKUP_KEY));}catch{return null;}})();
   const lastInfo=last?`Last backup: <span class="ts">${fmtDate(last.timestamp)}${last.cloudSaved?' ☁️':' 📱'}</span>`:'No backup yet';
   const entryCount=Object.keys(allEntries).length;
   showModal(`
@@ -506,10 +524,18 @@ function updateHeader(){
 }
 
 function updateSummary(){
-  const e=getEntries(selYear,selMonth);
-  const st=document.getElementById('st');if(st)st.textContent=fc(e.reduce((s,x)=>s+x.total,0));
-  const sp=document.getElementById('sp');if(sp)sp.textContent=fc(e.reduce((s,x)=>s+x.paid,0));
-  const sc=document.getElementById('sc');if(sc)sc.textContent=fc(e.reduce((s,x)=>s+x.credit,0));
+  const entries=getEntries(selYear,selMonth);
+  // Purchases only for bought total
+  const purchases=entries.filter(e=>e.type!=='payment');
+  const payments=entries.filter(e=>e.type==='payment');
+  const totalBought=purchases.reduce((s,x)=>s+x.total,0);
+  const totalPaid=purchases.reduce((s,x)=>s+x.paid,0);
+  const totalCredit=purchases.reduce((s,x)=>s+x.credit,0);
+  const totalPayments=payments.reduce((s,x)=>s+(x.amount||0),0);
+  const netCredit=Math.max(0,totalCredit-totalPayments);
+  const st=document.getElementById('st');if(st)st.textContent=fc(totalBought);
+  const sp=document.getElementById('sp');if(sp)sp.textContent=fc(totalPaid+totalPayments);
+  const sc=document.getElementById('sc');if(sc)sc.textContent=fc(netCredit);
 }
 
 function updateTabs(){
@@ -520,35 +546,52 @@ function updateTabs(){
   const at=document.getElementById('addtab');if(at)at.textContent=editId?'Edit':'Add';
 }
 
-function moneyGrid(entry){
-  return `<div class="mgrid">
-    <div class="mcell"><div class="mlabel">Total</div><div class="mval" style="color:var(--text)">${fc(entry.total)}</div></div>
-    <div class="mcell"><div class="mlabel">Paid</div><div class="mval" style="color:var(--green)">${fc(entry.paid)}</div></div>
-    <div class="mcell"><div class="mlabel">Credit</div><div class="mval" style="color:${entry.credit>0?'var(--red)':'var(--muted)'}">${fc(entry.credit)}</div></div>
-  </div>`;
-}
-
 function chips(entry){
   let h='';
+  if(entry.type==='payment')h+=`<span class="pchip">💳 PAYMENT</span>`;
   if(entry.by)h+=`<span class="ichip">${esc(entry.by)}</span>`;
   if(entry.editedBy)h+=`<span class="echip">✏️${esc(entry.editedBy)}</span>`;
   return h;
 }
 
 function makeCard(entry,isToday=false){
+  const isPayment=entry.type==='payment';
   const div=document.createElement('div');
-  div.className='ecard'+(isToday?' tcard':'');
-  div.innerHTML=`
-    <div class="etop">
-      <div style="flex:1;min-width:0;">
-        <div class="ename">${esc(entry.item)}</div>
-        <div class="emeta"><span class="eseller">from ${esc(entry.seller)}</span>${chips(entry)}</div>
+  div.className='ecard'+(isToday?' tcard':'')+(isPayment?' pcard':'');
+  if(isPayment){
+    div.innerHTML=`
+      <div class="etop">
+        <div style="flex:1;min-width:0;">
+          <div class="ename">💳 Payment to ${esc(entry.seller)}</div>
+          <div class="emeta">${chips(entry)}</div>
+        </div>
+        <div class="eacts">
+          <button class="bedit">EDIT</button>
+          <button class="bdel">DEL</button>
+        </div>
       </div>
-      <div class="eacts">
-        <button class="bedit">EDIT</button>
-        <button class="bdel">DEL</button>
+      <div class="pcell">
+        <div class="plabel">Amount Paid</div>
+        <div class="pval">${fc(entry.amount)}</div>
+      </div>`;
+  } else {
+    div.innerHTML=`
+      <div class="etop">
+        <div style="flex:1;min-width:0;">
+          <div class="ename">${esc(entry.item)}</div>
+          <div class="emeta"><span class="eseller">from ${esc(entry.seller)}</span>${chips(entry)}</div>
+        </div>
+        <div class="eacts">
+          <button class="bedit">EDIT</button>
+          <button class="bdel">DEL</button>
+        </div>
       </div>
-    </div>${moneyGrid(entry)}`;
+      <div class="mgrid">
+        <div class="mcell"><div class="mlabel">Total</div><div class="mval" style="color:var(--text)">${fc(entry.total)}</div></div>
+        <div class="mcell"><div class="mlabel">Paid</div><div class="mval" style="color:var(--green)">${fc(entry.paid)}</div></div>
+        <div class="mcell"><div class="mlabel">Credit</div><div class="mval" style="color:${entry.credit>0?'var(--red)':'var(--muted)'}">${fc(entry.credit)}</div></div>
+      </div>`;
+  }
   div.querySelector('.bedit').onclick=()=>{editId=entry.id;activeTab='add';render();};
   div.querySelector('.bdel').onclick=()=>{if(confirm('Delete this entry?')){dbDel(entry.id);showToast('Removed.');}};
   return div;
@@ -572,8 +615,9 @@ function renderLedger(el){
     const isT=ds===todayStr();
     const d=new Date(ds+'T12:00:00');
     const lbl=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const dayTotal=de.filter(e=>e.type!=='payment').reduce((s,e)=>s+e.total,0);
     const grp=document.createElement('div');grp.className='date-group';
-    grp.innerHTML=`<div class="dheader"><div class="dlabel${isT?' tod':''}">${isT?'⭐ Today — ':''}${lbl}</div><div class="ddiv"></div><div class="dtotal">${fc(de.reduce((s,e)=>s+e.total,0))}</div></div>`;
+    grp.innerHTML=`<div class="dheader"><div class="dlabel${isT?' tod':''}">${isT?'⭐ Today — ':''}${lbl}</div><div class="ddiv"></div><div class="dtotal">${fc(dayTotal)}</div></div>`;
     de.forEach(e=>grp.appendChild(makeCard(e,isT)));
     el.appendChild(grp);
   });
@@ -594,7 +638,7 @@ function renderToday(el){
     el.appendChild(dc);
     const pct=Math.round((gone/tot)*100);
     const pb=document.createElement('div');
-    pb.innerHTML=`<div class="pbar"><div class="pfill" style="width:${pct}%"></div></div><div class="plabel">${pct}% OF ${MONTHS[selMonth].toUpperCase()} COMPLETE</div>`;
+    pb.innerHTML=`<div class="pbar"><div class="pfill" style="width:${pct}%"></div></div><div class="plabel2">${pct}% OF ${MONTHS[selMonth].toUpperCase()} COMPLETE</div>`;
     el.appendChild(pb);
   }
   const te=getEntries(now.getFullYear(),now.getMonth()).filter(e=>toLocal(e.date)===todayStr());
@@ -606,85 +650,129 @@ function renderToday(el){
   }
   const cd=document.createElement('div');
   cd.style.cssText='font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';
-  cd.textContent=`${te.length} TRANSACTION${te.length>1?'S':''} — ${fc(te.reduce((s,e)=>s+e.total,0))} TODAY`;
+  cd.textContent=`${te.length} TRANSACTION${te.length>1?'S':''} TODAY`;
   el.appendChild(cd);
-  te.forEach(entry=>{
-    if(todayInlineId===entry.id){el.appendChild(buildInline(entry));}
-    else{
-      const card=document.createElement('div');card.className='ecard tcard';
-      card.innerHTML=`<div class="etop"><div style="flex:1;"><div class="ename">${esc(entry.item)}</div><div class="emeta"><span class="eseller">from ${esc(entry.seller)}</span>${chips(entry)}</div></div><button class="beo">EDIT</button></div>${moneyGrid(entry)}`;
-      card.querySelector('.beo').onclick=()=>{todayInlineId=entry.id;render();};
-      el.appendChild(card);
-    }
-  });
+  te.forEach(entry=>el.appendChild(makeCard(entry,true)));
   const am=document.createElement('button');am.className='bdashed';am.textContent='+ Add Another Entry Today';
   am.onclick=()=>{activeTab='add';render();};el.appendChild(am);
-}
-
-function buildInline(entry){
-  const div=document.createElement('div');div.className='ecard tcard';
-  div.innerHTML=`<div class="ietitle">✏️ Editing — you: <strong style="color:var(--accent)">${esc(userInitials)}</strong></div>
-    ${['seller:Seller:text','item:Item:text','total:Total ($):number','paid:Paid ($):number','credit:Credit ($):number'].map(f=>{
-      const[n,l,t]=f.split(':');
-      return `<div class="mfield"><label>${l}</label><input name="${n}" type="${t}" value="${esc(String(entry[n]??''))}" ${t==='number'?'min=0 step=0.01':''}></div>`;
-    }).join('')}
-    <div class="mbrow"><button class="msave">Save</button><button class="mcancel">Cancel</button><button class="mdel">Delete</button></div>`;
-  const inp={};div.querySelectorAll('input').forEach(i=>inp[i.name]=i);
-  ['total','paid'].forEach(n=>{if(inp[n])inp[n].oninput=()=>autoCredit(inp.total,inp.paid,inp.credit);});
-  div.querySelector('.msave').onclick=()=>{
-    if(!inp.seller.value.trim()||!inp.item.value.trim()||!inp.total.value){showToast('Seller, item & total required','error');return;}
-    dbSave({...entry,seller:inp.seller.value.trim(),item:inp.item.value.trim(),total:+inp.total.value||0,paid:+inp.paid.value||0,credit:+inp.credit.value||0,editedBy:userInitials});
-    todayInlineId=null;showToast('Updated!');
-  };
-  div.querySelector('.mcancel').onclick=()=>{todayInlineId=null;render();};
-  div.querySelector('.mdel').onclick=()=>{if(confirm('Delete?')){dbDel(entry.id);todayInlineId=null;showToast('Removed.');}};
-  return div;
 }
 
 function renderAdd(el){
   const isEdit=!!editId;
   const ex=isEdit?allEntries[editId]:null;
   const defDate=ex?toLocal(ex.date):todayStr();
+  const isPaymentEdit=ex&&ex.type==='payment';
+  if(isEdit)entryType=isPaymentEdit?'payment':'purchase';
+
   const div=document.createElement('div');div.className='fsec';
   div.innerHTML=`
     <div class="ftitle">${isEdit?'✏️ Edit Entry':'➕ New Entry'}</div>
-    <div style="font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:16px;">Entering as: <strong style="color:var(--accent)">${esc(userInitials)}</strong></div>
+    <div style="font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:14px;">Entering as: <strong style="color:var(--accent)">${esc(userInitials)}</strong></div>
+    ${!isEdit?`<div class="type-toggle">
+      <button class="type-btn ${entryType==='purchase'?'active-purchase':''}" id="btn-purchase">🛒 Purchase</button>
+      <button class="type-btn ${entryType==='payment'?'active-payment':''}" id="btn-payment">💳 Payment</button>
+    </div>`:''}
     <div class="field"><label>Date <span>(any date — past or present)</span></label><input type="date" id="fd" value="${defDate}"></div>
     <div class="field"><label>Seller / Person</label><input type="text" id="fs" placeholder="e.g. John Smith" value="${ex?esc(ex.seller):''}"></div>
-    <div class="field"><label>Item / Description</label><input type="text" id="fi" placeholder="e.g. Groceries, Tools..." value="${ex?esc(ex.item):''}"></div>
-    <div class="field"><label>Total Amount ($)</label><input type="number" id="ft" placeholder="0.00" min="0" step="0.01" value="${ex?ex.total:''}"></div>
-    <div class="field"><label>Amount Paid ($)</label><input type="number" id="fp" placeholder="0.00" min="0" step="0.01" value="${ex?ex.paid:''}"></div>
-    <div class="field"><label>On Credit ($)</label><input type="number" id="fc2" placeholder="Auto-calculated" min="0" step="0.01" value="${ex?ex.credit:''}"></div>
-    <div class="brow">
-      <button class="bprimary" id="fsub">${isEdit?'Update Entry':'Save Entry'}</button>
-      ${isEdit?'<button class="bcancel" id="fcan">Cancel</button>':''}
+    <div id="purchase-fields">
+      <div class="field"><label>Item / Description</label><input type="text" id="fi" placeholder="e.g. Groceries, Tools..." value="${ex&&!isPaymentEdit?esc(ex.item):''}"></div>
+      <div class="field"><label>Total Amount ($)</label><input type="number" id="ft" placeholder="0.00" min="0" step="0.01" value="${ex&&!isPaymentEdit?ex.total:''}"></div>
+      <div class="field"><label>Amount Paid ($)</label><input type="number" id="fp" placeholder="0.00" min="0" step="0.01" value="${ex&&!isPaymentEdit?ex.paid:''}"></div>
+      <div class="field"><label>On Credit ($)</label><input type="number" id="fc2" placeholder="Auto-calculated" min="0" step="0.01" value="${ex&&!isPaymentEdit?ex.credit:''}"></div>
     </div>
-    <div class="ftip">💡 Pick any date — even months ago. Your initials <strong style="color:var(--accent)">${esc(userInitials)}</strong> will appear on this entry.</div>`;
+    <div id="payment-fields" style="display:none">
+      <div class="field"><label>Payment Amount ($)</label><input type="number" id="famt" placeholder="0.00" min="0" step="0.01" value="${ex&&isPaymentEdit?ex.amount:''}"></div>
+      <div style="padding:10px 12px;background:rgba(147,197,253,0.08);border:1px solid rgba(147,197,253,0.2);border-radius:4px;font-size:11px;color:var(--blue);line-height:1.7;margin-bottom:13px;">
+        💳 This payment will be subtracted from the seller's credit balance for this month.
+      </div>
+    </div>
+    <div class="brow">
+      <button class="bprimary ${entryType==='payment'?'payment-btn':''}" id="fsub">${isEdit?'Update Entry':'Save Entry'}</button>
+      ${isEdit?'<button class="bcancel" id="fcan">Cancel</button>':''}
+    </div>`;
+
   const g=id=>div.querySelector(id);
-  g('#ft').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
-  g('#fp').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
+
+  // Type toggle
+  if(!isEdit){
+    g('#btn-purchase').onclick=()=>{
+      entryType='purchase';
+      g('#btn-purchase').className='type-btn active-purchase';
+      g('#btn-payment').className='type-btn';
+      g('#purchase-fields').style.display='';
+      g('#payment-fields').style.display='none';
+      g('#fsub').className='bprimary';
+    };
+    g('#btn-payment').onclick=()=>{
+      entryType='payment';
+      g('#btn-payment').className='type-btn active-payment';
+      g('#btn-purchase').className='type-btn';
+      g('#purchase-fields').style.display='none';
+      g('#payment-fields').style.display='';
+      g('#fsub').className='bprimary payment-btn';
+    };
+    // Show correct fields based on current type
+    if(entryType==='payment'){
+      g('#purchase-fields').style.display='none';
+      g('#payment-fields').style.display='';
+    }
+  } else {
+    if(isPaymentEdit){
+      g('#purchase-fields').style.display='none';
+      g('#payment-fields').style.display='';
+    }
+  }
+
+  // Auto credit calc
+  if(g('#ft')&&g('#fp')){
+    g('#ft').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
+    g('#fp').addEventListener('input',()=>autoCredit(g('#ft'),g('#fp'),g('#fc2')));
+  }
+
   g('#fsub').onclick=()=>{
-    const seller=g('#fs').value.trim(),item=g('#fi').value.trim(),total=g('#ft').value,dateVal=g('#fd').value;
-    if(!seller||!item||!total){showToast('Seller, item & total required','error');return;}
+    const seller=g('#fs').value.trim();
+    const dateVal=g('#fd').value;
+    if(!seller){showToast('Seller is required','error');return;}
     if(!dateVal){showToast('Please pick a date','error');return;}
     const entryDate=new Date(dateVal+'T12:00:00');
     const ey=entryDate.getFullYear(),em=entryDate.getMonth();
-    const entry={
-      id:editId||Date.now().toString(),
-      seller,item,
-      total:+total||0,paid:+(g('#fp').value)||0,credit:+(g('#fc2').value)||0,
-      date:dateVal+'T12:00:00',
-      by:isEdit?(ex.by||userInitials):userInitials,
-    };
-    if(isEdit)entry.editedBy=userInitials;
+
+    let entry;
+    if(entryType==='payment'||isPaymentEdit){
+      const amt=g('#famt').value;
+      if(!amt){showToast('Enter payment amount','error');return;}
+      entry={
+        id:editId||Date.now().toString(),
+        type:'payment',
+        seller,
+        amount:+amt||0,
+        date:dateVal+'T12:00:00',
+        by:isEdit?(ex.by||userInitials):userInitials,
+      };
+      if(isEdit)entry.editedBy=userInitials;
+    } else {
+      const item=g('#fi').value.trim(),total=g('#ft').value;
+      if(!item||!total){showToast('Item and total are required','error');return;}
+      entry={
+        id:editId||Date.now().toString(),
+        type:'purchase',
+        seller,item,
+        total:+total||0,paid:+(g('#fp').value)||0,credit:+(g('#fc2').value)||0,
+        date:dateVal+'T12:00:00',
+        by:isEdit?(ex.by||userInitials):userInitials,
+      };
+      if(isEdit)entry.editedBy=userInitials;
+    }
+
     dbSave(entry);
-    showToast(isEdit?'Entry updated!':'Entry saved!');
+    showToast(isEdit?'Entry updated!':(entryType==='payment'?'💳 Payment recorded!':'Entry saved!'));
     selYear=ey;selMonth=em;
     const sm=document.getElementById('sel-month');const sy=document.getElementById('sel-year');
     if(sm)sm.value=em;if(sy)sy.value=ey;
-    editId=null;activeTab='ledger';render();
+    editId=null;entryType='purchase';activeTab='ledger';render();
   };
-  if(isEdit){const fc=g('#fcan');if(fc)fc.onclick=()=>{editId=null;activeTab='ledger';render();};}
+
+  if(isEdit){const fc=g('#fcan');if(fc)fc.onclick=()=>{editId=null;entryType='purchase';activeTab='ledger';render();};}
   el.appendChild(div);
 }
 
@@ -699,27 +787,36 @@ function renderSellers(el){
   hdr.style.cssText='font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;';
   hdr.textContent=`${MONTHS[selMonth]} ${selYear} — ${[...new Set(entries.map(e=>e.seller))].length} seller(s)`;
   el.appendChild(hdr);
+
   const map={};
   entries.forEach(e=>{
-    if(!map[e.seller])map[e.seller]={total:0,paid:0,credit:0,count:0,who:new Set()};
-    const s=map[e.seller];s.total+=e.total;s.paid+=e.paid;s.credit+=e.credit;s.count++;
+    if(!map[e.seller])map[e.seller]={total:0,paid:0,credit:0,payments:0,count:0,who:new Set()};
+    const s=map[e.seller];
+    if(e.type==='payment'){
+      s.payments+=e.amount||0;
+    } else {
+      s.total+=e.total;s.paid+=e.paid;s.credit+=e.credit;s.count++;
+    }
     if(e.by)s.who.add(e.by);
   });
+
   Object.entries(map).sort((a,b)=>b[1].total-a[1].total).forEach(([seller,s])=>{
-    const pct=s.total>0?Math.round((s.paid/s.total)*100):0;
+    const netCredit=Math.max(0,s.credit-s.payments);
+    const pct=s.total>0?Math.round(((s.paid+s.payments)/s.total)*100):0;
     const whoChips=[...s.who].map(c=>`<span class="ichip">${esc(c)}</span>`).join('');
     const card=document.createElement('div');card.className='selcard';
     card.innerHTML=`
       <div class="seltop">
-        <div><div class="selname">${esc(seller)}</div><div class="selcount">${s.count} transaction${s.count>1?'s':''}${whoChips?' · '+whoChips:''}</div></div>
-        ${s.credit>0?`<div class="owes">OWES ${fc(s.credit)}</div>`:''}
+        <div><div class="selname">${esc(seller)}</div><div class="selcount">${s.count} purchase${s.count!==1?'s':''}${s.payments>0?` · 💳 ${fc(s.payments)} paid`:''} ${whoChips?'· '+whoChips:''}</div></div>
+        ${netCredit>0?`<div class="owes">OWES ${fc(netCredit)}</div>`:'<div class="paid-off">✅ CLEAR</div>'}
       </div>
       <div class="mgrid">
         <div class="mcell"><div class="mlabel">Bought</div><div class="mval" style="color:var(--text)">${fc(s.total)}</div></div>
-        <div class="mcell"><div class="mlabel">Paid</div><div class="mval" style="color:var(--green)">${fc(s.paid)}</div></div>
-        <div class="mcell"><div class="mlabel">Credit</div><div class="mval" style="color:${s.credit>0?'var(--red)':'var(--muted)'}">${fc(s.credit)}</div></div>
+        <div class="mcell"><div class="mlabel">Paid</div><div class="mval" style="color:var(--green)">${fc(s.paid+s.payments)}</div></div>
+        <div class="mcell"><div class="mlabel">Owes</div><div class="mval" style="color:${netCredit>0?'var(--red)':'var(--muted)'}">${fc(netCredit)}</div></div>
       </div>
-      ${s.total>0?`<div style="margin-top:11px"><div class="pbar"><div class="pfill" style="width:${Math.min(100,pct)}%;background:${s.credit>0?'var(--red)':'var(--green)'}"></div></div><div style="font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:1px;">${pct}% PAID</div></div>`:''}`;
+      ${s.payments>0?`<div style="margin-top:8px;font-size:10px;color:var(--blue);letter-spacing:1px;">💳 ${fc(s.payments)} in payments applied</div>`:''}
+      ${s.total>0?`<div style="margin-top:8px"><div class="pbar"><div class="pfill" style="width:${Math.min(100,pct)}%;background:${netCredit>0?'var(--red)':'var(--green)'}"></div></div><div style="font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:1px;">${pct}% PAID</div></div>`:''}`;
     el.appendChild(card);
   });
 }
